@@ -20,8 +20,7 @@ public class Usuario {
     private String sexo;
     private String correo;
     private String telefono;
-    private String estado;
-
+    private boolean estado;
 
 
 }

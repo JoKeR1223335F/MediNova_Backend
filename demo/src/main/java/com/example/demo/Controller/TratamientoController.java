@@ -20,6 +20,10 @@ public class TratamientoController {
         tratamientoService.insertarTratamiento(t);
         return "Tratamiento registrado correctamente.";
     }
+    @GetMapping("/paciente/{idPaciente}")
+    public List<Tratamiento> buscarTratamientosPorIdPaciente(@PathVariable Integer idPaciente) throws Exception {
+        return tratamientoService.buscarTratamientosPorIdPaciente(idPaciente);
+    }
 
     @PutMapping("/actualizar")
     public String actualizarTratamiento(@RequestBody Tratamiento t) throws Exception {

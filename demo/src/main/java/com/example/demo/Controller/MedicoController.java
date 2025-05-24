@@ -15,20 +15,12 @@ public class MedicoController {
     private MedicoService_I medicoService;
 
     // Listar todos los médicos
-    @GetMapping
+    @GetMapping("/listar")
     public List<Medico> listarMedicos() throws Exception {
         return medicoService.listarMedicos();
     }
-
-    // Insertar médico
-    @PostMapping
-    public String insertarMedico(@RequestBody Medico medico) throws Exception {
-        medicoService.insertarMedico(medico);
-        return "Médico registrado correctamente.";
-    }
-
     // Actualizar médico
-    @PutMapping
+    @PutMapping("/actualizar")
     public String actualizarMedico(@RequestBody Medico medico) throws Exception {
         medicoService.actualizarMedico(medico);
         return "Médico actualizado correctamente.";

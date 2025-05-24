@@ -1,27 +1,27 @@
 package com.example.demo.Service.Impl;
+
 import com.example.demo.Models.Usuario;
 import com.example.demo.Service.Interface.UsuarioService_I;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class UsuaruiService_Impl implements UsuarioService_I {
 
-
-    private Connection conn;
-
-    public void UsuarioService(Connection conn) {
-        this.conn = conn;
-    }
+    @Autowired
+    private DataSource dataSource;
 
     // INSERTAR USUARIO
     @Override
     public void insertarUsuario(Usuario u) throws SQLException {
-        String sql = "INSERT INTO usuarios (username, password, rol, nombre, apellido, dni, direccion, fecha_nacimiento, sexo, correo, telefono) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "call insertar_usuario(?,?,?,?,?,?,?,?,?,?,?)";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, u.getUsername());
             ps.setString(2, u.getPassword());
             ps.setString(3, u.getRol());
@@ -33,6 +33,7 @@ public class UsuaruiService_Impl implements UsuarioService_I {
             ps.setString(9, u.getSexo());
             ps.setString(10, u.getCorreo());
             ps.setString(11, u.getTelefono());
+
             ps.executeUpdate();
         }
     }
@@ -40,8 +41,9 @@ public class UsuaruiService_Impl implements UsuarioService_I {
     // ACTUALIZAR USUARIO
     @Override
     public void actualizarUsuario(Usuario u) throws SQLException {
-        String sql = "UPDATE usuarios SET username=?, password=?, rol=?, nombre=?, apellido=?, dni=?, direccion=?, fecha_nacimiento=?, sexo=?, correo=?, telefono=? WHERE id_usuario=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "UPDATE usuario SET username=?, password=?, rol=?, nombre=?, apellido=?, dni=?, direccion=?, fecha_nacimiento=?, sexo=?, correo=?, telefono=?, estado=? WHERE id_usuario=?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, u.getUsername());
             ps.setString(2, u.getPassword());
             ps.setString(3, u.getRol());
@@ -53,7 +55,7 @@ public class UsuaruiService_Impl implements UsuarioService_I {
             ps.setString(9, u.getSexo());
             ps.setString(10, u.getCorreo());
             ps.setString(11, u.getTelefono());
-            ps.setString(12, u.getEstado());
+            ps.setBoolean(12, u.isEstado());
             ps.setInt(13, u.getIdUsuario());
             ps.executeUpdate();
         }
@@ -62,8 +64,9 @@ public class UsuaruiService_Impl implements UsuarioService_I {
     // ELIMINADO LÓGICO
     @Override
     public void eliminarUsuario(Integer idUsuario) throws SQLException {
-        String sql = "UPDATE usuarios SET estado='Eliminado' WHERE id_usuario=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "UPDATE usuario SET estado=false WHERE id_usuario=?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idUsuario);
             ps.executeUpdate();
         }
@@ -72,8 +75,9 @@ public class UsuaruiService_Impl implements UsuarioService_I {
     // BUSCAR POR ID
     @Override
     public Usuario obtenerUsuarioPorId(Integer idUsuario) throws SQLException {
-        String sql = "SELECT * FROM usuarios WHERE id_usuario=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT * FROM usuario WHERE id_usuario=?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idUsuario);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -88,8 +92,9 @@ public class UsuaruiService_Impl implements UsuarioService_I {
     @Override
     public List<Usuario> listarUsuarios() throws SQLException {
         List<Usuario> lista = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios WHERE estado != 'Eliminado'";
-        try (Statement st = conn.createStatement();
+        String sql = "SELECT * FROM usuario WHERE estado !=false";
+        try (Connection conn = dataSource.getConnection();
+             Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 lista.add(mapearUsuario(rs));
@@ -114,9 +119,7 @@ public class UsuaruiService_Impl implements UsuarioService_I {
         u.setSexo(rs.getString("sexo"));
         u.setCorreo(rs.getString("correo"));
         u.setTelefono(rs.getString("telefono"));
-        u.setEstado(rs.getString("estado"));
+        u.setEstado(rs.getBoolean("estado"));
         return u;
     }
-
-
 }

@@ -12,25 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 public  class MedicoService_Impl implements MedicoService_I {
-    @Override
-    public void insertarMedico(Medico m) throws Exception {
-        Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT insertar_medico(?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setInt(1, m.getIdUsuario());
-        ps.setString(2, m.getEspecialidad());
-        ps.setString(3, m.getN_colegiatura());
-        ps.setString(4, m.getFoto());
-        ps.setString(5, m.getObservaciones());
-        ps.setBigDecimal(6, m.getRemuneracion());
-        ps.executeUpdate();
-        ps.close();
-        cn.close();
-    }
+
     @Override
     public void actualizarMedico(Medico m) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT actualizar_medico(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "Call actualizar_medico(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, m.getIdMedico());
         ps.setInt(2, m.getIdUsuario());
@@ -46,7 +32,7 @@ public  class MedicoService_Impl implements MedicoService_I {
     @Override
     public void eliminarMedico(Integer idMedico) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT eliminar_medico(?)";
+        String sql = "DELETE FROM medico WHERE id_medico = ?;\n";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, idMedico);
         ps.executeUpdate();

@@ -16,27 +16,27 @@ public class TratamientoItemController {
     private Tratamiento_itemService_I tratamientoItemService;
 
     // Listar todos los items de un tratamiento
-    @GetMapping("/{idTratamiento}")
+    @GetMapping("/listar/{idTratamiento}")
     public List<TratamientoItem> listarTratamientoItems(@PathVariable Integer idTratamiento) throws Exception {
         return tratamientoItemService.listarTratamientoItems(idTratamiento);
     }
 
     // Insertar nuevo tratamiento item
-    @PostMapping
+    @PostMapping("/crear")
     public String insertarTratamientoItem(@RequestBody TratamientoItem tratamientoItem) throws Exception {
         tratamientoItemService.insertarTratamientoItem(tratamientoItem);
         return "Item agregado al tratamiento correctamente.";
     }
 
     // Actualizar tratamiento item
-    @PutMapping
+    @PutMapping("/actualizar")
     public String actualizarTratamientoItem(@RequestBody TratamientoItem tratamientoItem) throws Exception {
         tratamientoItemService.actualizarTratamientoItem(tratamientoItem);
         return "Item de tratamiento actualizado correctamente.";
     }
 
     // Eliminar tratamiento item (requiere idTratamiento y idItem)
-    @DeleteMapping("/{idTratamiento}/{idItem}")
+    @DeleteMapping("/delete/{idTratamiento}/{idItem}")
     public String eliminarTratamientoItem(@PathVariable Integer idTratamiento, @PathVariable Integer idItem) throws Exception {
         tratamientoItemService.eliminarTratamientoItem(idTratamiento, idItem);
         return "Item de tratamiento eliminado correctamente.";

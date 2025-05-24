@@ -14,22 +14,15 @@ public class ContactoEmergenciaController {
     @Autowired
     private Con_EmergenciaService_I contactoEmergenciaService;
 
-    @PostMapping("/crear")
-    public String crearContactoEmergencia(@RequestBody ContactoEmergencia c) throws Exception {
-        contactoEmergenciaService.insertarContactoEmergencia(c);
-        return "Contacto de emergencia creado correctamente.";
-    }
 
     @PutMapping("/actualizar")
     public String actualizarContactoEmergencia(@RequestBody ContactoEmergencia c) throws Exception {
         contactoEmergenciaService.actualizarContactoEmergencia(c);
         return "Contacto de emergencia actualizado correctamente.";
     }
-
-    @DeleteMapping("/eliminar/{id}")
-    public String eliminarContactoEmergencia(@PathVariable Integer id) throws Exception {
-        contactoEmergenciaService.eliminarContactoEmergencia(id);
-        return "Contacto de emergencia eliminado correctamente.";
+    @GetMapping("/usuario/{idUsuario}")
+    public List<ContactoEmergencia> obtenerContactosPorUsuario(@PathVariable Integer idUsuario) throws Exception {
+        return contactoEmergenciaService.obtenerContactosPorUsuario(idUsuario);
     }
 
     @GetMapping("/listar")

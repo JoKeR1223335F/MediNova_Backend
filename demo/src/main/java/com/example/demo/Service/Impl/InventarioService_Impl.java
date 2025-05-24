@@ -16,7 +16,7 @@ public class InventarioService_Impl implements InventarioService_I {
     @Override
     public void insertarInventario(Inventario i) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT insertar_inventario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "call insertar_inventario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setString(1, i.getNombre());
         ps.setString(2, i.getTipoItem());
@@ -36,7 +36,7 @@ public class InventarioService_Impl implements InventarioService_I {
     @Override
     public void actualizarInventario(Inventario i) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT actualizar_inventario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "call actualizar_inventario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, i.getIdItem());
         ps.setString(2, i.getNombre());
@@ -57,7 +57,7 @@ public class InventarioService_Impl implements InventarioService_I {
     @Override
     public void eliminarInventario(int idItem) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT eliminar_inventario(?)";
+        String sql = "call eliminar_inventario(?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, idItem);
         ps.executeUpdate();
@@ -67,7 +67,7 @@ public class InventarioService_Impl implements InventarioService_I {
     @Override
     public List<Inventario> listarInventario() throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT * FROM listar_inventario()";
+        String sql = "select * from inventario";
         PreparedStatement ps = cn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<Inventario> lista = new ArrayList<>();
@@ -95,4 +95,38 @@ public class InventarioService_Impl implements InventarioService_I {
 
         return lista;
     }
+
+    @Override
+    public Inventario buscarInventarioPorId(int idItem) throws Exception {
+        Connection cn = ConexionPostgres.getConexion();
+        String sql = "SELECT * FROM inventario WHERE id_item = ?";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idItem);
+        ResultSet rs = ps.executeQuery();
+
+        Inventario i = null;
+
+        if (rs.next()) {
+            i = new Inventario();
+            i.setIdItem(rs.getInt("id_item"));
+            i.setNombre(rs.getString("nombre"));
+            i.setTipoItem(rs.getString("tipo_item"));
+            i.setUMedida(rs.getString("u_medida"));
+            i.setCantidad(rs.getInt("cantidad"));
+            i.setLote(rs.getString("lote"));
+            i.setFechaVencimiento(rs.getDate("fecha_vencimiento").toLocalDate());
+            i.setUbicacion(rs.getString("ubicacion"));
+            i.setProveedor(rs.getString("proveedor"));
+            i.setFechaIngreso(rs.getDate("fecha_ingreso").toLocalDate());
+            i.setObservaciones(rs.getString("observaciones"));
+            i.setCosto(rs.getBigDecimal("costo"));
+        }
+
+        rs.close();
+        ps.close();
+        cn.close();
+
+        return i;
+    }
+
 }

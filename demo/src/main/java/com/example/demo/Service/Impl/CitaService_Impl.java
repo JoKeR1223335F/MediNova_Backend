@@ -16,7 +16,7 @@ public class CitaService_Impl implements CitaService_I {
     @Override
     public void insertarCitaControl(CitaControl c) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT insertar_cita_control(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "call insertar_cita_control(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, c.getIdPaciente());
         ps.setInt(2, c.getIdTratamiento());
@@ -32,7 +32,7 @@ public class CitaService_Impl implements CitaService_I {
     @Override
     public void actualizarCitaControl(CitaControl c) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT actualizar_cita_control(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "call actualizar_cita_control(?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, c.getIdCita());
         ps.setInt(2, c.getIdPaciente());
@@ -46,16 +46,7 @@ public class CitaService_Impl implements CitaService_I {
         ps.close();
         cn.close();
     }
-    @Override
-    public void eliminarCitaControl(int idCita) throws Exception {
-        Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT eliminar_cita_control(?)";
-        PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setInt(1, idCita);
-        ps.executeUpdate();
-        ps.close();
-        cn.close();
-    }
+
     @Override
     public List<CitaControl> listarCitasControl() throws Exception {
         Connection cn = ConexionPostgres.getConexion();
@@ -83,4 +74,35 @@ public class CitaService_Impl implements CitaService_I {
 
         return lista;
     }
+
+    @Override
+    public List<CitaControl> buscarCitasControlPorTratamiento(int idTratamiento) throws Exception {
+        Connection cn = ConexionPostgres.getConexion();
+        String sql = "SELECT * FROM buscar_citas_control_por_tratamiento(?)";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idTratamiento);
+        ResultSet rs = ps.executeQuery();
+
+        List<CitaControl> lista = new ArrayList<>();
+
+        while (rs.next()) {
+            CitaControl c = new CitaControl();
+            c.setIdCita(rs.getInt("id_cita"));
+            c.setIdPaciente(rs.getInt("id_paciente"));
+            c.setIdTratamiento(rs.getInt("id_tratamiento"));
+            c.setFecha(rs.getDate("fecha").toLocalDate());
+            c.setHora(rs.getTime("hora").toLocalTime());
+            c.setMotivo(rs.getString("motivo"));
+            c.setObservaciones(rs.getString("observaciones"));
+            c.setEstado(rs.getString("estado"));
+            lista.add(c);
+        }
+
+        rs.close();
+        ps.close();
+        cn.close();
+
+        return lista;
+    }
+
 }

@@ -13,6 +13,7 @@ public class Tratamiento {
     private String tratamiento;
     private Integer idPaciente;
     private Integer idHC;
+    private Integer idMedico;
     private String nombre;
     private String descripcion;
     private LocalDate fechaInicio;
@@ -20,7 +21,6 @@ public class Tratamiento {
     private String estado;
     private byte[] archivo;
     private BigDecimal costo;
-    private LocalDate fechaEliminacion;
 
     // Getters y setters
 }

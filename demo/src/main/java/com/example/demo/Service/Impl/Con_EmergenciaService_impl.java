@@ -13,25 +13,11 @@ import java.util.List;
 @Service
 public  class Con_EmergenciaService_impl  implements Con_EmergenciaService_I {
 
-    @Override
-    public void insertarContactoEmergencia(ContactoEmergencia c) throws Exception {
-        Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT insertar_contacto_emergencia(?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setInt(1, c.getIdUsuario());
-        ps.setString(2, c.getNombre());
-        ps.setString(3, c.getApellido());
-        ps.setString(4, c.getParentesco());
-        ps.setString(5, c.getTelefono());
-        ps.setString(6, c.getCorreo());
-        ps.executeUpdate();
-        ps.close();
-        cn.close();
-    }
+
     @Override
     public void actualizarContactoEmergencia(ContactoEmergencia c) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT actualizar_contacto_emergencia(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "call actualizar_contacto_emergencia(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, c.getIdContacto());
         ps.setInt(2, c.getIdUsuario());
@@ -45,17 +31,41 @@ public  class Con_EmergenciaService_impl  implements Con_EmergenciaService_I {
         cn.close();
     }
 
-
     @Override
-    public void eliminarContactoEmergencia(Integer idContacto) throws Exception {
+    public List<ContactoEmergencia> obtenerContactosPorUsuario(Integer idUsuario) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT eliminar_contacto_emergencia(?)";
+        String sql = "SELECT * FROM obtener_contactos_emergencia_por_usuario(?)";
         PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setInt(1, idContacto);
-        ps.executeUpdate();
+        ps.setInt(1, idUsuario);
+        ResultSet rs = ps.executeQuery();
+
+        List<ContactoEmergencia> lista = new ArrayList<>();
+
+        while (rs.next()) {
+            ContactoEmergencia c = new ContactoEmergencia();
+            c.setIdContacto(rs.getInt("id_contacto"));
+            c.setIdUsuario(rs.getInt("id_usuario"));
+            c.setNombre(rs.getString("nombre"));
+            c.setApellido(rs.getString("apellido"));
+            c.setParentesco(rs.getString("parentesco"));
+            c.setTelefono(rs.getString("telefono"));
+            c.setCorreo(rs.getString("correo"));
+            lista.add(c);
+        }
+
+        rs.close();
         ps.close();
         cn.close();
+
+        if (lista.isEmpty()) {
+            throw new Exception("No se encontraron contactos para el usuario con id: " + idUsuario);
+        }
+
+        return lista;
     }
+
+
+
     @Override
     public List<ContactoEmergencia> listarContactoEmergencia() throws Exception {
         Connection cn = ConexionPostgres.getConexion();

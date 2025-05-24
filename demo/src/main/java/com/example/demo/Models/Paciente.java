@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public class Paciente {
     private Integer idPaciente;
     private Integer idUsuario;
+    private Integer idMedico;
     private String TipoSangre;
     private String SeguroMedico;
 

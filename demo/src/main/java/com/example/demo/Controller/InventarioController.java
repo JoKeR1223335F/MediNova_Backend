@@ -3,6 +3,8 @@ package com.example.demo.Controller;
 import com.example.demo.Models.Inventario;
 import com.example.demo.Service.Interface.InventarioService_I;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -35,5 +37,19 @@ public class InventarioController {
     @GetMapping("/listar")
     public List<Inventario> listarInventario() throws Exception {
         return inventarioService.listarInventario();
+    }
+
+    @GetMapping("/{idItem}")
+    public ResponseEntity<Inventario> obtenerInventarioPorId(@PathVariable int idItem) {
+        try {
+            Inventario inventario = inventarioService.buscarInventarioPorId(idItem);
+            if (inventario != null) {
+                return ResponseEntity.ok(inventario);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

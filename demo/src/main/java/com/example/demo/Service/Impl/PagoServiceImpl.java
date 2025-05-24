@@ -16,7 +16,7 @@ public class PagoServiceImpl implements PagoService_I {
     @Override
     public void insertarPago(Pago p) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT insertar_pago(?, ?, ?, ?, ?, ?)";
+        String sql = "call insertar_pago(?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, p.getIdPaciente());
         ps.setString(2, p.getConcepto());
@@ -31,7 +31,7 @@ public class PagoServiceImpl implements PagoService_I {
     @Override
     public void actualizarPago(Pago p) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT actualizar_pago(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "call actualizar_pago(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, p.getIdPago());
         ps.setInt(2, p.getIdPaciente());
@@ -44,16 +44,7 @@ public class PagoServiceImpl implements PagoService_I {
         ps.close();
         cn.close();
     }
-    @Override
-    public void eliminarPago(int idPago) throws Exception {
-        Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT eliminar_pago(?)";
-        PreparedStatement ps = cn.prepareStatement(sql);
-        ps.setInt(1, idPago);
-        ps.executeUpdate();
-        ps.close();
-        cn.close();
-    }
+
     @Override
     public List<Pago> listarPagos() throws Exception {
         Connection cn = ConexionPostgres.getConexion();
@@ -80,4 +71,34 @@ public class PagoServiceImpl implements PagoService_I {
 
         return lista;
     }
+
+    @Override
+    public List<Pago> buscarPagosPorPaciente(int idPaciente) throws Exception {
+        Connection cn = ConexionPostgres.getConexion();
+        String sql = "SELECT * FROM listar_pagos_por_paciente(?)";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idPaciente);
+        ResultSet rs = ps.executeQuery();
+
+        List<Pago> lista = new ArrayList<>();
+
+        while (rs.next()) {
+            Pago p = new Pago();
+            p.setIdPago(rs.getInt("id_pago"));
+            p.setIdPaciente(rs.getInt("id_paciente"));
+            p.setConcepto(rs.getString("concepto"));
+            p.setMonto(rs.getBigDecimal("monto"));
+            p.setFechaPago(rs.getDate("fecha_pago").toLocalDate());
+            p.setMetodoPago(rs.getString("metodo_pago"));
+            p.setEstado(rs.getString("estado"));
+            lista.add(p);
+        }
+
+        rs.close();
+        ps.close();
+        cn.close();
+
+        return lista;
+    }
+
 }

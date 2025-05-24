@@ -9,4 +9,5 @@ public interface InventarioService_I {
     void actualizarInventario(Inventario i) throws Exception;
     void eliminarInventario(int idItem) throws Exception;
     List<Inventario> listarInventario() throws Exception;
+    Inventario buscarInventarioPorId(int idItem) throws Exception;
 }

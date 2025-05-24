@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class FichaMedica {
+    private Integer idFichaMedica;
     private Integer idUsuario;
     private String grupoSanguineo;
     private String factorRh;

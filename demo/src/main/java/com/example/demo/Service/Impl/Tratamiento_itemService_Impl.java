@@ -17,7 +17,7 @@ public class Tratamiento_itemService_Impl implements Tratamiento_itemService_I {
     @Override
     public void insertarTratamientoItem(TratamientoItem ti) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT insertar_tratamiento_item(?, ?, ?, ?, ?)";
+        String sql = "call insertar_tratamiento_item(?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, ti.getIdTratamiento());
         ps.setInt(2, ti.getIdItem());
@@ -31,7 +31,7 @@ public class Tratamiento_itemService_Impl implements Tratamiento_itemService_I {
     @Override
     public void actualizarTratamientoItem(TratamientoItem ti) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT actualizar_tratamiento_item(?, ?, ?, ?, ?)";
+        String sql = "call actualizar_tratamiento_item(?, ?, ?, ?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, ti.getIdTratamiento());
         ps.setInt(2, ti.getIdItem());
@@ -45,7 +45,7 @@ public class Tratamiento_itemService_Impl implements Tratamiento_itemService_I {
     @Override
     public void eliminarTratamientoItem(Integer idTratamiento, Integer idItem) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT eliminar_tratamiento_item(?, ?)";
+        String sql = "call eliminar_tratamiento_item(?, ?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, idTratamiento);
         ps.setInt(2, idItem);
@@ -56,7 +56,7 @@ public class Tratamiento_itemService_Impl implements Tratamiento_itemService_I {
     @Override
     public List<TratamientoItem> listarTratamientoItems(Integer idTratamiento) throws Exception {
         Connection cn = ConexionPostgres.getConexion();
-        String sql = "SELECT * FROM listar_tratamiento_items(?)";
+        String sql = "select * from listar_tratamiento_items(?)";
         PreparedStatement ps = cn.prepareStatement(sql);
         ps.setInt(1, idTratamiento);
         ResultSet rs = ps.executeQuery();
