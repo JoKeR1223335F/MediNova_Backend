@@ -8,7 +8,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/citas")
-@CrossOrigin()
+
+@CrossOrigin(origins = "*")
 public class CitaController {
 
     @Autowired

@@ -1,13 +1,14 @@
-package com.example.demo.Controller.UsuariosController;
+package com.example.demo.Controller;
 import com.example.demo.Models.Usuario;
 import com.example.demo.Service.Interface.UsuarioService_I;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+
 @RestController
 @RequestMapping("/api/usuarios")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired
