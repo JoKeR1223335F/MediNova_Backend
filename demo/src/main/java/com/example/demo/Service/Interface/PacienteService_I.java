@@ -9,4 +9,5 @@ public interface PacienteService_I {
     void actualizarPaciente(Paciente p) throws Exception;
 
     List<Paciente> listarPacientes() throws Exception;
+    Integer obtenerIdPacientePorUsuario(int idUsuario) throws Exception;
 }

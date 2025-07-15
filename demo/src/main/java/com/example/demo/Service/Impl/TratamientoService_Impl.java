@@ -142,4 +142,42 @@ public  class TratamientoService_Impl implements TratamientoService_I {
         return lista;
     }
 
+    @Override
+    public List<Tratamiento> buscarTratamientosPorPaciente(int idPaciente) throws Exception {
+        Connection cn = ConexionPostgres.getConexion();
+        String sql = "SELECT * FROM tratamiento WHERE id_paciente = ?";
+        PreparedStatement ps = cn.prepareStatement(sql);
+        ps.setInt(1, idPaciente);
+        ResultSet rs = ps.executeQuery();
+
+        List<Tratamiento> lista = new ArrayList<>();
+
+        while (rs.next()) {
+            Tratamiento t = new Tratamiento();
+            t.setIdTratamiento(rs.getInt("id_tratamiento"));
+            t.setTratamiento(rs.getString("tratamiento"));
+            t.setIdPaciente(rs.getInt("id_paciente"));
+            t.setIdHC(rs.getInt("id_hc"));
+            t.setIdMedico(rs.getInt("id_medico"));
+            t.setNombre(rs.getString("nombre"));
+            t.setDescripcion(rs.getString("descripcion"));
+            t.setFechaInicio(rs.getDate("fecha_inicio").toLocalDate());
+            t.setFechaFin(rs.getDate("fecha_fin").toLocalDate());
+            t.setEstado(rs.getString("estado"));
+            t.setArchivo(rs.getBytes("archivo"));
+            t.setCosto(rs.getBigDecimal("costo"));
+
+            lista.add(t);
+        }
+
+        rs.close();
+        ps.close();
+        cn.close();
+
+        return lista;
+    }
+
 }
+
+
+

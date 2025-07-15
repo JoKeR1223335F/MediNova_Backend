@@ -23,5 +23,13 @@ public class Tratamiento {
     private BigDecimal costo;
 
     // Getters y setters
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }
 

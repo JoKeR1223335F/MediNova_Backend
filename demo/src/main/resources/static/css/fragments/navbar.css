@@ -1,0 +1,132 @@
+/* NAVBAR CONTAINER */
+.navbar-container .navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    flex-wrap: wrap;
+}
+
+/* BOTÓN MENÚ */
+.navbar-container .menu-toggle {
+    display: none;
+    font-size: 1.2rem;
+    padding: 10px 15px;
+    background-color: #801168;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-container .menu-toggle:hover {
+    background-color: #235fdf;
+}
+
+/* TABS */
+.navbar-container .tabs {
+    display: flex;
+    list-style: none;
+    padding: 12px 25px;
+    gap: 30px;
+    background-color: #0f00db;
+    margin: 0;
+    border-bottom: 1px solid #18c543;
+}
+
+.navbar-container .tabs li {
+    font-weight: bold;
+}
+
+.navbar-container .tabs a {
+    text-decoration: none;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.navbar-container .tabs a:hover {
+    background-color: #ffffff;
+    color: #000;
+}
+
+/* BOTÓN MODO OSCURO */
+.navbar-container #toggle-dark-mode {
+    background: #eee;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* MODO OSCURO EN NAVBAR */
+body.dark-mode .navbar-container .navbar {
+    background-color: #000000;
+}
+
+body.dark-mode .navbar-container .tabs a {
+    color: #ffffff;
+}
+
+body.dark-mode .navbar-container .tabs a:hover {
+    background-color: #ffffff;
+    color: #000;
+}
+
+body.dark-mode .navbar-container #toggle-dark-mode {
+    background: #222121;
+    color: #fff;
+}
+.navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+
+/* RESPONSIVE PARA NAVBAR */
+@media (max-width: 768px) {
+    .navbar-container .menu-toggle {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .navbar-container .tabs {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px 15px;
+        margin-top: 1rem;
+        border-radius: 8px;
+        background: linear-gradient(to bottom, #f5b11e, #d0e6f7);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-container .tabs.show {
+        display: flex;
+    }
+
+    .navbar-container .tabs li {
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .navbar-container .tabs a {
+        color: #000000;
+        background-color: #fcfcfc;
+        font-weight: bold;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background-color 0.2s;
+    }
+
+    .navbar-container .tabs a:hover {
+        background-color: #56e675bd;
+    }
+}

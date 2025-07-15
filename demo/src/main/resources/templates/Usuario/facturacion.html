@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Facturación - Medinova</title>
+  <link th:href="@{/css/Usuario/facturacion.css}" rel="stylesheet" />
+  <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" />
+  <link th:href="@{/css/fragments/footer.css}" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+
+<main class="main-content">
+<div id="content-global">
+  <!-- RESUMEN -->
+  <section class="summary-cards">
+    <div class="card total">
+      <h3>Total Facturado</h3>
+      <p>S/ <span id="total-facturado">0.00</span></p>
+    </div>
+    <div class="card pagado">
+      <h3>Total Pagado</h3>
+      <p>S/ <span id="total-pagado">0.00</span></p>
+    </div>
+    <div class="card pendiente">
+      <h3>Pendiente</h3>
+      <p>S/ <span id="total-pendiente">0.00</span></p>
+    </div>
+  </section>
+
+  <!-- FORMULARIO -->
+  <section class="form-section">
+    <h2>Registrar Nueva Factura</h2>
+    <form id="form-factura" class="factura-form">
+      <input type="date" id="fecha" name="fecha" required />
+      <input type="text" id="paciente" name="paciente" placeholder="Nombre del paciente" required />
+      <input type="number" id="monto" name="monto" placeholder="Monto (S/)" step="0.01" required />
+      <select id="estado" name="estado" required>
+        <option value="">Estado</option>
+        <option value="pagado">Pagado</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="en-proceso">En proceso</option>
+      </select>
+      <div class="btn-group">
+        <button type="submit" class="btn green">➕ Añadir Factura</button>
+        <button type="button" class="btn gray" onclick="limpiarFormulario()">🧹 Limpiar</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- TABLA DE FACTURAS -->
+  <section class="table-section">
+    <div class="table-header">
+      <h2>Facturas Recientes</h2>
+      <input type="text" id="filtro" placeholder="Buscar por nombre o estado..." />
+    </div>
+    <table class="tabla-facturas">
+      <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Paciente</th>
+        <th>Monto</th>
+        <th>Estado</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="pago : ${pagos}">
+        <td th:text="${#temporals.format(pago.fechaPago, 'dd/MM/yyyy')}">01/01/2025</td>
+        <td th:text="${pago.concepto}">Paciente Ejemplo</td>
+        <td th:text="${#numbers.formatDecimal(pago.monto, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</td>
+        <td th:text="${pago.estado}">Pagado</td>
+      </tr>
+      <tr th:if="${pagos == null or #lists.isEmpty(pagos)}">
+        <td colspan="4" style="text-align:center;">No hay facturas registradas.</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- GRÁFICO -->
+  <section class="grafico-container">
+    <h2>Gráfico de Ingresos</h2>
+    <div class="chart-wrapper">
+      <canvas id="graficoFacturacion"></canvas>
+    </div>
+  </section>
+
+  <!-- EXPORTAR -->
+  <section class="exportar">
+    <button onclick="window.print()">📄 Exportar a PDF</button>
+  </section>
+</div>
+</main>
+
+
+
+<!-- TOAST -->
+<div id="toast" class="toast">✅ Factura registrada correctamente</div>
+
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/js/Usuario/facturacion.js}"></script>
+</body>
+</html>
+

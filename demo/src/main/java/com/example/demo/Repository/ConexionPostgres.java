@@ -8,7 +8,7 @@ public class ConexionPostgres {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/medinova";
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "MediNova";
+    private static final String PASSWORD = "postgres";
 
     static {
         try {

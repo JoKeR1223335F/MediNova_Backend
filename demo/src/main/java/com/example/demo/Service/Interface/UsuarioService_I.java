@@ -12,4 +12,5 @@ public interface UsuarioService_I {
     void  eliminarUsuario(Integer idUsuario) throws Exception;
     Usuario obtenerUsuarioPorId(Integer idUsuario) throws SQLException;
     List<Usuario> listarUsuarios() throws Exception;
+    Usuario validarCredenciales(String usuarioOCorreo, String password);
 }

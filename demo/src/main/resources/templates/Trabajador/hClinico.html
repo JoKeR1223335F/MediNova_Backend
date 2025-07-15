@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historial Clínico - Medinova</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/Usuario/historialclinico.css}" />
+  <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" />
+  <link th:href="@{/css/fragments/footer.css}" rel="stylesheet" />
+</head>
+
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="container">
+  <!-- Datos del Paciente -->
+  <section class="patient-info card">
+    <h2><i class="fas fa-user-injured"></i> Datos del Paciente</h2>
+    <div class="info-grid">
+      <p><strong>Nombre:</strong> <span th:text="${paciente.nombre}">Luciano</span></p>
+      <p><strong>DNI:</strong> <span th:text="${paciente.dni}">2333278</span></p>
+      <p><strong>Sexo:</strong> <span th:text="${paciente.sexo}">Masculino</span></p>
+      <p><strong>Teléfono:</strong> <span th:text="${paciente.telefono}">987654321</span></p>
+      <p><strong>Email:</strong> <span th:text="${paciente.correo}">Luciano@hotmail.com</span></p>
+      <p><strong>Dirección:</strong> <span th:text="${paciente.direccion}">Av. Central 123, Ica</span></p>
+    </div>
+  </section>
+
+  <!-- Antecedentes -->
+  <section class="antecedentes card">
+    <div class="card-header">
+      <h2><i class="fas fa-notes-medical"></i> Documentos Médicos</h2>
+    </div>
+    <ul>
+      <li th:each="item : ${documentos}" th:text="${item}">Asma diagnosticada...</li>
+    </ul>
+
+    <div class="form-controls">
+      <input type="text" id="nuevo-antecedente" placeholder="Nuevo antecedente..." />
+      <button onclick="agregarAntecedente()">➕ Agregar</button>
+    </div>
+  </section>
+
+  <!-- Historial Médico -->
+  <section class="clinical-records card">
+    <h2><i class="fas fa-notes-medical"></i> Historial Médico</h2>
+    <input type="text" id="buscador" placeholder="Buscar diagnóstico o fecha..." class="buscador" />
+
+    <div id="registros">
+      <div th:each="consulta : ${consultas}" class="record">
+        <h3 th:text="'Consulta - ' + ${#temporals.format(consulta.fecha, 'dd/MM/yyyy')}
+">Consulta - 10/05/2025</h3>
+        <p><strong>Motivo:</strong> <span th:text="${consulta.motivo}"></span></p>
+        <p><strong>Diagnóstico:</strong> <span th:text="${consulta.diagnostico}"></span></p>
+        <p><strong>Tratamiento:</strong> <span th:text="${consulta.tratamiento}"></span></p>
+        <p><strong>Notas:</strong> <span th:text="${consulta.notas}"></span></p>
+        <p><strong>Médico tratante:</strong> <span th:text="${consulta.medico}"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resultados de Exámenes -->
+  <section class="exam-results">
+    <h2><i class="fas fa-x-ray"></i> Tabla de Historial </h2>
+    <table class="exam-table">
+      <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Tipo de Examen</th>
+        <th>Resultado</th>
+        <th>Observaciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="ex : ${examenes}">
+        <td th:text="${#temporals.format(consulta.fecha, 'dd/MM/yyyy')}
+">11/05/2025</td>
+        <td th:text="${ex.tipo}">Radiografía</td>
+        <td th:text="${ex.resultado}">Bronquios inflamados</td>
+        <td th:text="${ex.observaciones}">Tratamiento requerido</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Notas Generales -->
+  <section class="general-notes">
+    <h2><i class="fas fa-stethoscope"></i> Notas Médicas Generales</h2>
+    <div class="note-box">
+      <p><strong>Estado del Paciente:</strong> Evolución estable.</p>
+      <p><strong>Recomendaciones:</strong></p>
+      <ul>
+        <li>Evitar exposición al polvo y cambios bruscos de clima.</li>
+        <li>Alimentación balanceada con reducción de grasas.</li>
+        <li>Control cada 3 meses o ante nuevos síntomas.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<div class="pdf-export">
+  <button onclick="window.print()"><i class="fas fa-file-pdf"></i> Descargar Historial PDF</button>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/js/Usuario/historialclinico.js}"></script>
+<script>
+  const counter = localStorage.getItem("visitas") || 0;
+  const updated = parseInt(counter) + 1;
+  localStorage.setItem("visitas", updated);
+  document.getElementById("visit-counter").innerText = updated;
+</script>
+</body>
+</html>
+

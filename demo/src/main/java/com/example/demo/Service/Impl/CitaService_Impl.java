@@ -49,28 +49,26 @@ public class CitaService_Impl implements CitaService_I {
 
     @Override
     public List<CitaControl> listarCitasControl() throws Exception {
-        Connection cn = ConexionPostgres.getConexion();
         String sql = "SELECT * FROM listar_citas_control()";
-        PreparedStatement ps = cn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
         List<CitaControl> lista = new ArrayList<>();
 
-        while (rs.next()) {
-            CitaControl c = new CitaControl();
-            c.setIdCita(rs.getInt("id_cita"));
-            c.setIdPaciente(rs.getInt("id_paciente"));
-            c.setIdTratamiento(rs.getInt("id_tratamiento"));
-            c.setFecha(rs.getDate("fecha").toLocalDate());
-            c.setHora(rs.getTime("hora").toLocalTime());
-            c.setMotivo(rs.getString("motivo"));
-            c.setObservaciones(rs.getString("observaciones"));
-            c.setEstado(rs.getString("estado"));
-            lista.add(c);
-        }
+        try (Connection cn = ConexionPostgres.getConexion();
+             PreparedStatement ps = cn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-        rs.close();
-        ps.close();
-        cn.close();
+            while (rs.next()) {
+                CitaControl c = new CitaControl();
+                c.setIdCita(rs.getInt("id_cita"));
+                c.setIdPaciente(rs.getInt("id_paciente"));
+                c.setIdTratamiento(rs.getInt("id_tratamiento"));
+                c.setFecha(rs.getDate("fecha").toLocalDate());
+                c.setHora(rs.getTime("hora").toLocalTime());
+                c.setMotivo(rs.getString("motivo"));
+                c.setObservaciones(rs.getString("observaciones"));
+                c.setEstado(rs.getString("estado"));
+                lista.add(c);
+            }
+        }
 
         return lista;
     }

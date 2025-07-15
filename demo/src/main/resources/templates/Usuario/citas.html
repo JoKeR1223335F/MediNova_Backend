@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medinova | Citas</title>
+
+  <link th:href="@{/css/Usuario/citas.css}" rel="stylesheet" />
+  <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" />
+  <link th:href="@{/css/fragments/footer.css}" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="container">
+  <section class="list-section">
+    <h2>📋 Citas Programadas</h2>
+
+    <input type="text" id="search" placeholder="Buscar por paciente o especialidad" class="search-input" />
+
+    <ul id="appointment-list" class="appointment-list">
+      <li th:each="cita : ${citas}">
+        <p>
+          <strong th:text="${cita.motivo}">Motivo</strong><br />
+          📅 <span th:text="${#temporals.format(cita.fecha, 'dd/MM/yyyy')}">Fecha</span> –
+          🕒 <span th:text="${cita.hora}">Hora</span> –
+          🩺 <span th:text="${cita.observaciones}">Observaciones</span>
+        </p>
+        <button class="btn-cancelar"
+                th:data-id="${cita.idCita}"
+                onclick="cancelarCita(this)">Cancelar</button>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<!-- Modal para Confirmar Cancelación -->
+<div id="modal-cancel" class="modal" style="display:none;">
+  <div class="modal-content">
+    <p>¿Estás seguro de que quieres cancelar esta cita?</p>
+    <button id="confirm-cancel" class="btn-confirm-cancel">Confirmar</button>
+    <button id="cancel-cancel" class="btn-cancel">Cancelar</button>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  document.addEventListener("DOMContentLoaded", () => {
+    const modalCancel = document.getElementById("modal-cancel");
+    let appointmentToCancel = null;
+
+    window.cancelarCita = function(button) {
+      appointmentToCancel = button.closest("li");
+      modalCancel.style.display = "block";
+    };
+
+    document.getElementById("confirm-cancel").addEventListener("click", () => {
+      if (appointmentToCancel) {
+        appointmentToCancel.remove();
+        modalCancel.style.display = "none";
+        Swal.fire({ title: '¡Cita Cancelada!', text: 'La cita ha sido cancelada correctamente.', icon: 'success' });
+      }
+    });
+
+    document.getElementById("cancel-cancel").addEventListener("click", () => {
+      modalCancel.style.display = "none";
+    });
+
+    document.getElementById("search").addEventListener("input", e => {
+      const searchTerm = e.target.value.toLowerCase();
+      document.querySelectorAll("#appointment-list li").forEach(cita => {
+        const texto = cita.textContent.toLowerCase();
+        cita.style.display = texto.includes(searchTerm) ? "" : "none";
+      });
+    });
+  });
+  /*]]>*/
+</script>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

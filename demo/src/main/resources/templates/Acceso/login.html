@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medinova - Inicio de Sesión</title>
+  <link th:href="@{/css/Acceso/login.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="login-container">
+  <img th:src="@{/img/doctor.png}" alt="médico">
+
+  <!-- Mensaje de error si lo hay -->
+  <p class="error-message" th:if="${error}" th:text="${error}"></p>
+
+  <form th:action="@{/validarLogin}" method="post">
+    <input type="text" name="usuarioOCorreo" placeholder="Usuario o Correo" required />
+    <div class="password-container">
+      <input type="password" name="password" id="password" placeholder="Contraseña" required />
+      <span class="toggle-password" onclick="togglePassword()">👁️‍🗨️</span>
+    </div>
+    <button type="submit">Iniciar Sesión</button>
+  </form>
+  <a th:href="@{/registro}">Registrarse</a>
+</div>
+
+<script>
+  function togglePassword() {
+    var passwordField = document.getElementById("password");
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+    } else {
+      passwordField.type = "password";
+    }
+  }
+</script>
+</body>
+</html>

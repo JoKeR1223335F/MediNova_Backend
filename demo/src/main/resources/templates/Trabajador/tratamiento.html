@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tratamiento - Medinova</title>
+  <link rel="stylesheet" th:href="@{/css/Usuario/tratamiento.css}" />
+  <link th:href="@{/css/fragments/navbar.css}" rel="stylesheet" />
+  <link th:href="@{/css/fragments/footer.css}" rel="stylesheet" />
+  <script defer th:src="@{/js/Usuario/tratamiento.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+
+
+<main class="container">
+  <!-- Datos del paciente -->
+  <section class="patient-summary" th:if="${paciente != null}">
+    <h2>👤 Datos del Paciente</h2>
+    <div class="summary-box">
+      <p><strong>Nombre:</strong> <span th:text="${paciente.nombreCompleto}">Nombre Apellido</span></p>
+      <p><strong>Edad:</strong> <span th:text="${paciente.edad}">35</span> años</p>
+      <p><strong>Diagnóstico:</strong> <span th:text="${paciente.diagnostico}">Diagnóstico</span></p>
+      <p><strong>Estado:</strong>
+        <span th:classappend="${paciente.estado == 'En curso'} ? 'status-label en-progreso' : 'status-label finalizado'"
+              th:text="${paciente.estado == 'En curso'} ? '🟡 En curso' : '✅ Finalizado'">🟡 En curso</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Tratamientos activos -->
+  <section class="treatment-plan">
+    <h2>💊 Tratamientos Activos</h2>
+    <button class="toggle-button" onclick="toggleTratamientos()">Mostrar / Ocultar Tratamientos</button>
+
+    <div id="tratamientos-activos" class="treatments-container" th:if="${tratamientos != null}">
+      <div th:each="tratamiento : ${tratamientos}">
+        <div class="treatment-item">
+          <h3 th:text="${tratamiento.nombre}">Nombre tratamiento</h3>
+          <p th:text="${tratamiento.descripcion}">Descripción del tratamiento</p>
+          <p><strong>Inicio:</strong> <span th:text="${#temporals.format(tratamiento.fechaInicio, 'dd/MM/yyyy')}">01/01/2025</span></p>
+          <p><strong>Fin:</strong> <span th:text="${#temporals.format(tratamiento.fechaFin, 'dd/MM/yyyy')}">10/01/2025</span></p>
+          <p><strong>Estado:</strong> <span th:text="${tratamiento.estado}">En curso</span></p>
+          <p><strong>Costo:</strong> S/ <span th:text="${tratamiento.costo}">0.00</span></p>
+        </div>
+        <hr/>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recomendaciones del médico -->
+  <section class="doctor-notes" th:if="${recomendaciones != null}">
+    <h2>📋 Recomendaciones del Médico</h2>
+    <div class="summary-box doctor">
+      <p th:each="rec : ${recomendaciones}" th:text="${rec}">Recomendación del médico</p>
+    </div>
+  </section>
+
+  <!-- Acciones interactivas -->
+  <section class="acciones">
+    <form th:action="@{/tratamientos/crear}" method="post" id="form-tratamiento">
+      <input type="text" name="nombre" id="nuevoNombre" placeholder="Nombre del tratamiento" required />
+      <input type="text" name="descripcion" id="nuevaDescripcion" placeholder="Descripción del tratamiento" required />
+      <button type="submit" id="btnAgregar">➕ Añadir nuevo tratamiento</button>
+    </form>
+    <button id="btnAlta" onclick="darDeAlta()">✔️ Dar de alta al paciente</button>
+  </section>
+</main>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<div id="toast-container"></div>
+</body>
+</html>

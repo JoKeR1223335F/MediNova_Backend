@@ -1,0 +1,318 @@
+/* RESET GLOBAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo General del Body */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #1c8a81b7;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* Cabecera */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #007bff;  /* Celeste (color clínico) */
+}
+
+.btn-volver {
+  text-decoration: none;
+  background-color: #ec7b1e;  /* Rojo de ambulancia */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  display: inline-block;
+  font-size: 1rem;
+}
+
+.btn-volver:hover {
+  background-color: #46ad57;  /* Rojo más oscuro */
+}
+
+/* Estilo para el Contenedor Principal */
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 40px; /* Aumenta la separación lateral */
+  justify-content: center; /* Centra horizontalmente los bloques */
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+/* Sección del Formulario */
+.form-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #007bff;
+  width: 48%; /* Reduce el ancho */
+  min-width: 320px;
+}
+
+/* Sección de la Lista de Citas */
+.list-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #dc3545;
+  width: 48%; /* Reduce el ancho */
+  min-width: 320px;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .form-section, .list-section {
+    width: 100%;
+    padding: 15px;
+  }
+}
+
+
+.form-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Botón de Enviar Cita */
+button {
+  background-color: #007bff;  /* Celeste */
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;  /* Celeste más oscuro */
+}
+
+/* Sección de la Lista de Citas */
+
+
+.list-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #dc3545;
+}
+
+.appointment-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.appointment-list li {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-list li p {
+  font-size: 1rem;
+  color: #333;
+}
+
+.btn-cancelar {
+  background-color: #dc3545;  /* Rojo de ambulancia */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #c82333;  /* Rojo más oscuro */
+}
+
+/* Búsqueda en la Lista de Citas */
+.search-input {
+  padding: 10px;
+  font-size: 1rem;
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Modal de Cancelación de Cita */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.modal-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.btn-confirm-cancel,
+.btn-cancel {
+  background-color: #007bff;  /* Celeste */
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 5px;
+  border: none;
+}
+
+.btn-confirm-cancel:hover,
+.btn-cancel:hover {
+  background-color: #0056b3;  /* Celeste más oscuro */
+}
+
+.modal-content button {
+  background-color: #dc3545;  /* Rojo */
+}
+
+.modal-content button:hover {
+  background-color: #c82333;  /* Rojo más oscuro */
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+
+
+  .header h1 {
+    font-size: 1.6rem;
+  }
+
+
+
+  .form-group input,
+  .form-group select {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 1rem;
+  }
+
+  .appointment-list li p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Media Queries para Dispositivos Móviles */
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.4rem;
+  }
+
+  .appointment-list li p {
+    font-size: 0.8rem;
+  }
+
+  .search-input {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 1rem;
+    width: 100%;
+  }
+}
+
+.appointments-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.appointments-left {
+  flex: 1;
+}
+
+.appointments-right {
+  flex: 1;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+.resumen-cita p {
+  margin: 0.5rem 0;
+}
+
+.appointment-list li {
+  cursor: pointer;
+}

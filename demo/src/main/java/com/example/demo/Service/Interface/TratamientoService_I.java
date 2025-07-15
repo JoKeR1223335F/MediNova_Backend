@@ -11,4 +11,5 @@ public interface TratamientoService_I {
     List<Tratamiento> buscarTratamientosPorIdPaciente(Integer idPaciente) throws Exception;
 
     List<Tratamiento> listarTratamientos() throws Exception;
+    List<Tratamiento> buscarTratamientosPorPaciente(int idPaciente) throws Exception;
 }

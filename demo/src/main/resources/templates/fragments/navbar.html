@@ -1,0 +1,16 @@
+<header th:fragment="navbar">
+    <div class="navbar-container">
+
+        <nav class="navbar">
+            <button id="navbar-menu-toggle" class="menu-toggle" aria-label="Abrir menú">☰ Menú</button>
+            <ul class="tabs">
+                <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/citas}">Citas</a></li>
+                <li><a th:href="@{/historialClinico}">H. clínico</a></li>
+                <li><a th:href="@{/pagos}">Facturación</a></li>
+                <li><a th:href="@{/tratamiento}">Tratamiento</a></li>
+                <li><a th:href="@{/perfil}">Perfil</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

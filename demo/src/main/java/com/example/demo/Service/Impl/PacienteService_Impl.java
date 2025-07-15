@@ -51,6 +51,27 @@ public class PacienteService_Impl implements PacienteService_I {
 
             return lista;
         }
-    }
+        @Override
+        public Integer obtenerIdPacientePorUsuario(int idUsuario) throws Exception {
+            Connection cn = ConexionPostgres.getConexion();
+            String sql = "SELECT id_paciente FROM paciente WHERE id_usuario = ?";
+            PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setInt(1, idUsuario);
+            ResultSet rs = ps.executeQuery();
+
+            Integer idPaciente = null;
+
+            if (rs.next()) {
+                idPaciente = rs.getInt("id_paciente");
+            }
+
+            rs.close();
+            ps.close();
+            cn.close();
+
+            return idPaciente;  // devuelve null si no se encontró
+        }
+
+}
 
 
